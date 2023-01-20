@@ -112,7 +112,7 @@ namespace Visitor
 
         public void MetodaDlaNative(Native element)
         {
-            Console.WriteLine(element.InfoOgolne() + $"\n\tWydano::{element.kwotaWydana} PLN;\tPozyskano:{element.iloscKlientow} klientów;\tIlość wykupionych bilboardów:{element.iloscBilboardow}.");
+            Console.WriteLine(element.InfoOgolne() + $"\n\tWydano:{element.kwotaWydana} PLN;\tPozyskano:{element.iloscKlientow} klientów;\tIlość wykupionych bilboardów:{element.iloscBilboardow}.");
         }
         public void MetodaDlaInternetu(Internet element)
         {
@@ -130,44 +130,51 @@ namespace Visitor
             Console.WriteLine("Aby zakończyć działąnie aplikacji wpisz exit:");
             while(wybór!="exit")
             {
-                Console.WriteLine("\nPodaj rodzaj kampanii: (Influencer/Native/Internet)");
-                wybór = Console.ReadLine();
-                if (wybór == "Influencer" || wybór == "Native" || wybór == "Internet")
+                try
                 {
-                    
-                    Console.Write("Podaj kwotę obecnie wydaną:");
-                    long kwota = Convert.ToInt64(Console.ReadLine());
+                    Console.WriteLine("\nPodaj rodzaj kampanii: (Influencer/Native/Internet)");
+                    wybór = Console.ReadLine();
+                    if (wybór == "Influencer" || wybór == "Native" || wybór == "Internet")
+                    {
 
-                    Console.Write("Podaj ilość pozyskanych klientów:");
-                    long iloscKlientow = Convert.ToInt64(Console.ReadLine());
-                    KampaniaMarketingowa kampania = new KampaniaMarketingowa(kwota, iloscKlientow);
-                    if (wybór == "Influencer")
-                    {
-                        Console.Write("Podaj nazwę konta/bloga:");
-                        string nazwa = Console.ReadLine();
-                        kampania = new Influencer(kwota, iloscKlientow, nazwa);
-                    }
-                    else if (wybór == "Native")
-                    {
-                        Console.Write("Podaj ilość wykupionych bilboardów:");
-                        long iloscBilboardów = Convert.ToInt64(Console.ReadLine());
-                        kampania = new Native(kwota, iloscKlientow, iloscBilboardów);
-                    }
-                    else if (wybór == "Internet")
-                    {
-                        Console.Write("Podaj ilość wykupionych reklam:");
-                        long iloscReklam = Convert.ToInt64(Console.ReadLine());
+                        Console.Write("Podaj kwotę obecnie wydaną:");
+                        long kwota = Convert.ToInt64(Console.ReadLine());
 
-                        Console.Write("Podaj adres URL strony:");
-                        string adresUrl = Console.ReadLine();
-                        kampania = new Internet(kwota, iloscKlientow, adresUrl, iloscReklam);
+                        Console.Write("Podaj ilość pozyskanych klientów:");
+                        long iloscKlientow = Convert.ToInt64(Console.ReadLine());
+                        KampaniaMarketingowa kampania = new KampaniaMarketingowa(kwota, iloscKlientow);
+                        if (wybór == "Influencer")
+                        {
+                            Console.Write("Podaj nazwę konta/bloga:");
+                            string nazwa = Console.ReadLine();
+                            kampania = new Influencer(kwota, iloscKlientow, nazwa);
+                        }
+                        else if (wybór == "Native")
+                        {
+                            Console.Write("Podaj ilość wykupionych bilboardów:");
+                            long iloscBilboardów = Convert.ToInt64(Console.ReadLine());
+                            kampania = new Native(kwota, iloscKlientow, iloscBilboardów);
+                        }
+                        else if (wybór == "Internet")
+                        {
+                            Console.Write("Podaj ilość wykupionych reklam:");
+                            long iloscReklam = Convert.ToInt64(Console.ReadLine());
+
+                            Console.Write("Podaj adres URL strony:");
+                            string adresUrl = Console.ReadLine();
+                            kampania = new Internet(kwota, iloscKlientow, adresUrl, iloscReklam);
+                        }
+                        kampania.Accept(visitor1);
+                        kampania.Accept(visitor2);
                     }
-                    kampania.Accept(visitor1);
-                    kampania.Accept(visitor2);
+                    else if (wybór != "exit")
+                    {
+                        Console.WriteLine("Błędna opcja.");
+                    }
                 }
-                else if(wybór!="exit")
+                catch(Exception ex)
                 {
-                    Console.WriteLine("Błędna opcja.");
+                    Console.WriteLine("Uzupełnij pole. Dane liczbowe muszą zostać wprowadzone, w przypadku braku wpisz 0.");
                 }
             }
             
